@@ -13,12 +13,10 @@ if st.button("Analyze & Fix Error"):
         st.warning("⚠️ API Key aur Error Log dono daalna zaroori hai.")
     else:
         with st.spinner("Analyzing traceback..."):
-            try:
+                try:
                 genai.configure(api_key=api_key)
-                # IQ 200: Auto-detect working model
-                available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-                working_model = available_models[0]
-                model = genai.GenerativeModel(working_model)
+                # Hardcoded to the exact model Google asked for
+                model = genai.GenerativeModel("gemini-3.6-flash")
                 
                 prompt = f"Act as a DevOps Expert. Read this error: {log_text}. Give 1. Root Cause, 2. Step-by-step fix, 3. Terminal commands. Use clean markdown."
                 response = model.generate_content(prompt)
