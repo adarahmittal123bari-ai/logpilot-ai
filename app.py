@@ -15,9 +15,14 @@ if st.button("Analyze & Fix Error"):
         with st.spinner("Analyzing traceback..."):
             try:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel("gemini-pro")
+                # IQ 200: Auto-detect working model
+                available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+                working_model = available_models[0]
+                model = genai.GenerativeModel(working_model)
+                
                 prompt = f"Act as a DevOps Expert. Read this error: {log_text}. Give 1. Root Cause, 2. Step-by-step fix, 3. Terminal commands. Use clean markdown."
                 response = model.generate_content(prompt)
+                
                 st.success("Analysis Complete!")
                 st.markdown(response.text)
             except Exception as e:
