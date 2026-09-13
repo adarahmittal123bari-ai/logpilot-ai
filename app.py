@@ -15,7 +15,7 @@ if st.button("Analyze & Fix Error"):
         with st.spinner("Analyzing traceback..."):
             try:
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel("gemini-1.5-flash")
+                model = genai.GenerativeModel("gemini-3.6-flash")
                 
                 prompt = f"Act as a DevOps Expert. Read this error: {log_text}. Give 1. Root Cause, 2. Step-by-step fix, 3. Terminal commands. Use clean markdown."
                 response = model.generate_content(prompt)
@@ -24,4 +24,3 @@ if st.button("Analyze & Fix Error"):
                 st.markdown(response.text)
             except Exception as e:
                 st.error(f"API Error: {e}")
-          
